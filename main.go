@@ -105,9 +105,6 @@ func downTrack(index int,trackUrl string,trackName string) {
 	io.Copy(file,resp.Body)
 }
 
-/**
-
- */
 func lpad(s string,n int) string{
 	l := len(s)
 	if(l >= n){
@@ -156,12 +153,5 @@ type Track struct {
 func assertOk(err error){
 	if err != nil {
 		panic(err)
-	}
-}
-
-
-func checkOk(err error){
-	if err != nil {
-		log.Info(err.Error())
 	}
 }
