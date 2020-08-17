@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
-	"github.com/kelseyhightower/confd/log"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"strconv"
@@ -21,7 +21,7 @@ func main() {
 	dir := *dirArg
 
 	if albumId == "" {
-		log.Info("error albumId")
+		log.Println("error albumId")
 		return
 	}
 	if dir == "" {
@@ -32,10 +32,10 @@ func main() {
 	ablumPath = dir + "/" + title
 	err := os.MkdirAll(ablumPath, os.ModePerm)
 	assertOk(err)
-	log.Info("mkdir ablumPath:"+ablumPath)
-	log.Info("start download album")
+	log.Println("mkdir ablumPath:"+ablumPath)
+	log.Println("start download album")
 	handleAlbumPage(albumId,1)
-	log.Info("success download ablum %s",title)
+	log.Println("success download ablum %s",title)
 }
 
 func getAblumTitle(albumId string) string {
@@ -50,7 +50,7 @@ func getAblumTitle(albumId string) string {
 }
 
 func handleAlbumPage(albumId string,pageNum int)  {
-	log.Info("download pageNum:%d",pageNum)
+	log.Println("download pageNum:%d",pageNum)
 	url := fmt.Sprintf("https://www.ximalaya.com/revision/album/v1/getTracksList?albumId=%s"+"&pageNum=%d", albumId, pageNum)
 	resp, err := http.Get(url)
 	assertOk(err)
@@ -89,7 +89,7 @@ func getTrackUrl(trackId int) string{
 func downTrack(index int,trackUrl string,trackName string) {
 	resp, err := http.Get(trackUrl)
 	if err != nil {
-		log.Info(err.Error())
+		log.Println(err.Error())
 		return
 	}
 	os.MkdirAll(ablumPath,os.ModePerm)
@@ -98,10 +98,10 @@ func downTrack(index int,trackUrl string,trackName string) {
 	filename := seq+"_"+trackName + ".m4a"
 	file, _ := os.Create(ablumPath+"/"+ filename)
 	if err != nil {
-		log.Info(err.Error())
+		log.Println(err.Error())
 		return
 	}
-	log.Info("download %s success", filename)
+	log.Println("download %s success", filename)
 	io.Copy(file,resp.Body)
 }
 
